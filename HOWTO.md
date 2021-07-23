@@ -58,3 +58,5 @@ npx create-react-app jira --template typescript
   ```
 
 ### 2.2 mock server
+
+使用 json-server
