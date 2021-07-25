@@ -22,7 +22,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prepare": "husky install",
-    "mock": "json-server mock/db.json --watch --port 3333"
+    "mock": "json-server mock/db.json --watch --port 3333 --middlewares ./mock/middlewares.js"
   },
   "eslintConfig": {
     "extends": [

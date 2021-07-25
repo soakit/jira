@@ -60,3 +60,8 @@ npx create-react-app jira --template typescript
 ### 2.2 mock server
 
 使用 json-server
+
+```shell
+# 中间件可以自定义接口处理
+json-server mock/db.json --watch --port 3333 --middlewares ./mock/middlewares.js
+```
