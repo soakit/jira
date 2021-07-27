@@ -3,9 +3,11 @@ import styled from "@emotion/styled";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import { Link } from "react-router-dom";
 import { Dropdown, Row, Menu, Button } from "antd";
-import { useAuth } from "context/auth";
 import { ProjectPopover } from "components/ProjectPopover";
 import { UserPopover } from "components/UserPopover";
+import { useSelector } from "redux/store";
+import { useDispatch } from "react-redux";
+import { authAction } from "redux/auth.slice";
 
 const Header = styled(Row)`
   padding: 3.2rem;
@@ -16,13 +18,18 @@ const HeaderLeft = styled(Row)``;
 const HeaderRight = styled.div``;
 
 const User = () => {
-  const { logout, user } = useAuth();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+
+  const onLogout = () => {
+    dispatch(authAction.logOut());
+  };
   return (
     <Dropdown
       overlay={
         <Menu>
           <Menu.Item key={"logout"}>
-            <Button onClick={logout} type={"link"}>
+            <Button onClick={onLogout} type={"link"}>
               登出
             </Button>
           </Menu.Item>

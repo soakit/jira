@@ -5,7 +5,7 @@ import { useAsync } from "hooks/useAsync";
 import { FullPageErrorFallback, FullPageLoading } from "components/lib";
 import { User } from "types/user";
 
-interface AuthForm {
+export interface AuthForm {
   username: string;
   password: string;
 }

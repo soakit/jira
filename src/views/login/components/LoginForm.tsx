@@ -1,30 +1,20 @@
 import React from "react";
 import { Form, Input } from "antd";
 import { LongButton } from "../login";
-import { useAuth } from "context/auth";
-import { useAsync } from "hooks/useAsync";
+import { login } from "redux/auth.slice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "redux/store";
 
-export const LoginForm = ({
-  onError,
-  onSuccess,
-}: {
-  onError: (error: Error) => void;
-  onSuccess: () => void;
-}) => {
-  const { login } = useAuth();
-  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
+export const LoginForm = () => {
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   // HTMLFormElement extends Element
   const handleSubmit = async (values: {
     username: string;
     password: string;
   }) => {
-    try {
-      await run(login(values));
-      onSuccess();
-    } catch (e: any) {
-      onError(e);
-    }
+    await dispatch(login(values));
   };
 
   return (

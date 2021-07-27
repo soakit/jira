@@ -1,4 +1,5 @@
 import { User } from "types/user";
+import { http } from "utils/http";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -41,6 +42,16 @@ export const register = (data: { username: string; password: string }) => {
       return Promise.reject(await response.json());
     }
   });
+};
+
+export const getUserInfo = async () => {
+  let user = null;
+  const token = getToken();
+  if (token) {
+    const data = await http("me", { token });
+    user = data.user;
+  }
+  return user;
 };
 
 export const logout = () => {

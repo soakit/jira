@@ -1,7 +1,7 @@
 import qs from "qs";
 import * as auth from "context/auth-provider";
-import { useAuth } from "context/auth";
 import { useCallback } from "react";
+import { useSelector } from "redux/store";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -48,7 +48,7 @@ export const http = async (
 };
 
 export const useHttp = () => {
-  const { user } = useAuth();
+  const user = useSelector((state) => state.auth.user);
   // utility type 的用法：用泛型给它传入一个其他类型，然后utility type对这个类型进行某种操作
   return useCallback(
     (...[endpoint, config]: Parameters<typeof http>) =>

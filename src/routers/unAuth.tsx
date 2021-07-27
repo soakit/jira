@@ -1,17 +1,15 @@
 import React from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router";
 
 import Login from "views/login/login";
 
 const Router: React.FC = () => {
   // TODO: 记录跳转前的路由，登录后跳转回来
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/projects" element={<Login />} />
-        <Navigate to="/projects" />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="*" element={<Navigate to="/login" />} />
+    </Routes>
   );
 };
 

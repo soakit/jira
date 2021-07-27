@@ -1,19 +1,13 @@
 import React from "react";
 import { Form, Input } from "antd";
 import { LongButton } from "../login";
-import { useAuth } from "context/auth";
-import { useAsync } from "hooks/useAsync";
+import { register } from "redux/auth.slice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "redux/store";
 
-export const RegisterForm = ({
-  onError,
-  onSuccess,
-}: {
-  onError: (error: Error) => void;
-  onSuccess: () => void;
-}) => {
-  const { register } = useAuth();
-  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
-
+export const RegisterForm = () => {
+  const isLoading = useSelector((state) => state.auth.isLoading);
+  const dispatch = useDispatch();
   // HTMLFormElement extends Element
   const handleSubmit = async ({
     cpassword,
@@ -23,16 +17,7 @@ export const RegisterForm = ({
     password: string;
     cpassword: string;
   }) => {
-    if (cpassword !== values.password) {
-      onError(new Error("请确认两次输入的密码相同"));
-      return;
-    }
-    try {
-      await run(register(values));
-      onSuccess();
-    } catch (e: any) {
-      onError(e);
-    }
+    await dispatch(register(values));
   };
 
   return (
@@ -51,7 +36,17 @@ export const RegisterForm = ({
       </Form.Item>
       <Form.Item
         name={"cpassword"}
-        rules={[{ required: true, message: "请确认密码" }]}
+        rules={[
+          { required: true, message: "请确认密码" },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (!value || getFieldValue("password") === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject(new Error("请确认两次输入的密码相同"));
+            },
+          }),
+        ]}
       >
         <Input placeholder={"确认密码"} type="password" id={"cpassword"} />
       </Form.Item>
