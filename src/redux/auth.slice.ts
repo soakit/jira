@@ -63,7 +63,6 @@ export const authSlice = createSlice({
       state.isLoading = true;
     },
     [register.fulfilled.type](state, action: PayloadAction<User>) {
-      console.log("register.fulfilled.type", action.payload);
       state.error = null;
       state.isLoading = false;
       state.user = action.payload;

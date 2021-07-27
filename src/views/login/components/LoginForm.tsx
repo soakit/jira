@@ -4,10 +4,15 @@ import { LongButton } from "../login";
 import { login } from "redux/auth.slice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "redux/store";
+import { useUrlQueryParam } from "utils/url";
+import { useNavigate } from "react-router";
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.auth.isLoading);
+
+  const navigate = useNavigate();
+  const [params] = useUrlQueryParam(["redirectTo"]);
 
   // HTMLFormElement extends Element
   const handleSubmit = async (values: {
@@ -15,6 +20,15 @@ export const LoginForm = () => {
     password: string;
   }) => {
     await dispatch(login(values));
+    const { redirectTo } = params;
+    if (redirectTo) {
+      const url = new URL(decodeURIComponent(redirectTo));
+      navigate({
+        pathname: url.pathname,
+        search: url.search,
+        hash: url.hash,
+      });
+    }
   };
 
   return (
