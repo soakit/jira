@@ -3,17 +3,21 @@ import { Button, Drawer, Form, Input, Spin } from "antd";
 import {
   useProjectEditModal,
   useProjectModal,
+  useProjectsSearchParams,
 } from "views/project-list/hooks/ProjectHooks";
 import { UserSelect } from "components/UserSelect";
 import { useAddProject, useEditProject } from "utils/project";
 import { ErrorBox } from "components/lib";
 import styled from "@emotion/styled";
 import { Project } from "types/project";
+import { useDispatch } from "react-redux";
+import { getProjectList } from "redux/project.slice";
 
 export const ProjectModal = () => {
   const { projectModalOpen, close } = useProjectModal();
-
   const { editingProject, isLoading } = useProjectEditModal();
+  const dispatch = useDispatch();
+  const [param] = useProjectsSearchParams();
 
   const useMutateProject = editingProject ? useEditProject : useAddProject;
 
@@ -23,6 +27,7 @@ export const ProjectModal = () => {
     mutate({ ...editingProject, ...values } as Project).then(() => {
       form.resetFields();
       close();
+      dispatch(getProjectList(param));
     });
   };
   const closeModal = () => {
