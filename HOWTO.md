@@ -65,3 +65,8 @@ npx create-react-app jira --template typescript
 # 中间件可以自定义接口处理
 json-server mock/db.json --watch --port 3333 --middlewares ./mock/middlewares.js
 ```
+
+## 3. redux-toolkit
+
+使用 redux-toolkit 开发项目列表，管理用户状态。
+参考 redux-toolkit 分支。
