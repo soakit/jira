@@ -26,9 +26,6 @@ export const useProjectModal = () => {
     "editingProjectId",
   ]);
   const setUrlParams = useSetUrlSearchParam();
-  const { isLoading, data: editingProject } = useProject(
-    Number(editingProjectId)
-  );
 
   const open = () => setProjectCreate({ projectCreate: true });
   const close = () => setUrlParams({ projectCreate: "", editingProjectId: "" });
@@ -49,6 +46,14 @@ export const useProjectModal = () => {
     open,
     close,
     startEdit,
+  };
+};
+
+export const useProjectEditModal = () => {
+  const [{ editingProjectId }] = useUrlQueryParam(["editingProjectId"]);
+  const { isLoading, data: editingProject } = useProject(editingProjectId);
+
+  return {
     editingProject,
     isLoading,
   };

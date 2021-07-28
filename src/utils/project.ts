@@ -44,7 +44,7 @@ export const useAddProject = () => {
   const client = useHttp();
   const mutate = (params: Partial<Project>) => {
     return run(
-      client(`projects/${params.id}`, {
+      client(`projects`, {
         data: params,
         method: "POST",
       })
@@ -73,12 +73,12 @@ export const useDeleteProject = () => {
   };
 };
 
-export const useProject = (id?: number) => {
+export const useProject = (id?: string) => {
   const client = useHttp();
   const { run, ...result } = useAsync<Project>();
 
   const fetchProject = useCallback(() => {
-    return id ? client(`projects/${id}`) : Promise.resolve({});
+    return id ? client(`projects/${id}`) : Promise.resolve(null);
   }, [id, client]);
 
   useEffect(() => {

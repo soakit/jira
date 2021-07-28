@@ -13,7 +13,7 @@ import { User } from "types/user";
 
 interface ListProps extends TableProps<Project> {
   users: User[];
-  refresh?: () => void;
+  refresh: () => void;
 }
 
 export const ProjectTable = ({ users, ...props }: ListProps) => {
@@ -78,7 +78,7 @@ export const ProjectTable = ({ users, ...props }: ListProps) => {
         },
         {
           render(value, project) {
-            return <More project={project} />;
+            return <More project={project} refresh={props.refresh} />;
           },
         },
       ]}
@@ -87,7 +87,13 @@ export const ProjectTable = ({ users, ...props }: ListProps) => {
   );
 };
 
-const More = ({ project }: { project: Project }) => {
+const More = ({
+  project,
+  refresh,
+}: {
+  project: Project;
+  refresh: () => void;
+}) => {
   const { startEdit } = useProjectModal();
   const editProject = (id: number) => () => startEdit(id);
   const { mutate: deleteProject } = useDeleteProject();
@@ -97,7 +103,7 @@ const More = ({ project }: { project: Project }) => {
       content: "点击确定删除",
       okText: "确定",
       onOk() {
-        deleteProject({ id });
+        deleteProject({ id }).then(refresh);
       },
     });
   };

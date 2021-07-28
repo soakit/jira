@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { Button, Drawer, Form, Input, Spin } from "antd";
-import { useProjectModal } from "views/project-list/hooks/ProjectHooks";
+import {
+  useProjectEditModal,
+  useProjectModal,
+} from "views/project-list/hooks/ProjectHooks";
 import { UserSelect } from "components/UserSelect";
 import { useAddProject, useEditProject } from "utils/project";
 import { ErrorBox } from "components/lib";
@@ -8,8 +11,10 @@ import styled from "@emotion/styled";
 import { Project } from "types/project";
 
 export const ProjectModal = () => {
-  const { projectModalOpen, close, editingProject, isLoading } =
-    useProjectModal();
+  const { projectModalOpen, close } = useProjectModal();
+
+  const { editingProject, isLoading } = useProjectEditModal();
+
   const useMutateProject = editingProject ? useEditProject : useAddProject;
 
   const { mutate, error, isLoading: mutateLoading } = useMutateProject();

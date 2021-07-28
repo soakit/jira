@@ -16,8 +16,7 @@ import { getProjectList, getProjectUsers } from "redux/project.slice";
 export const ProjectList = () => {
   useDocumentTitle("项目列表", false);
 
-  // TODO:
-  const { open } = useProjectModal();
+  const { open, projectModalOpen } = useProjectModal();
 
   const [param, setParam] = useProjectsSearchParams();
   const debounceParam = useDebounce(param, 500);
@@ -28,12 +27,14 @@ export const ProjectList = () => {
   const isLoading = useSelector((state) => state.project.isLoading);
   const error = useSelector((state) => state.project.error);
 
-  const retry = () => {
+  const refresh = () => {
     dispatch(getProjectList(param));
   };
   useEffect(() => {
-    dispatch(getProjectList(debounceParam));
-  }, [dispatch, debounceParam]);
+    if (!projectModalOpen) {
+      dispatch(getProjectList(debounceParam));
+    }
+  }, [dispatch, debounceParam, projectModalOpen]);
 
   useEffect(() => {
     dispatch(getProjectUsers({ useCache: true }));
@@ -50,7 +51,7 @@ export const ProjectList = () => {
       <ProjectSearch users={users || []} param={param} setParam={setParam} />
       <ErrorBox error={error} />
       <ProjectTable
-        refresh={retry}
+        refresh={refresh}
         loading={isLoading}
         users={users || []}
         dataSource={list || []}
