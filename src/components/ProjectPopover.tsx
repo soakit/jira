@@ -11,14 +11,14 @@ export const ProjectPopover = () => {
   const { open } = useProjectModal();
 
   const dispatch = useDispatch();
-  const projects = useSelector((state) => state.project.projectList);
-  const pinnedProjects = projects?.filter((project) => project.pin);
+  const originList = useSelector((state) => state.project.originList);
+  const pinnedProjects = originList?.filter((project) => project.pin);
 
   useEffect(() => {
-    if (!projects.length) {
+    if (!originList.length) {
       dispatch(getOriginList());
     }
-  }, [dispatch, projects.length]);
+  }, [dispatch, originList.length]);
 
   const content = (
     <ContentContainer>

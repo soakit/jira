@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { ProjectSearch } from "./components/ProjectSearch";
 import { ProjectTable } from "./components/ProjectTable";
 import { useDebounce, useDocumentTitle } from "utils";
@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { Row } from "antd";
 import { useSelector } from "redux/store";
 import { getProjectList, getProjectUsers } from "redux/project.slice";
+import { Project } from "types/project";
 
 // 状态提升可以让组件共享状态，但是容易造成 prop drilling
 
@@ -16,10 +17,20 @@ import { getProjectList, getProjectUsers } from "redux/project.slice";
 export const ProjectList = () => {
   useDocumentTitle("项目列表", false);
 
-  const { open, projectModalOpen } = useProjectModal();
+  const { open } = useProjectModal();
 
   const [param, setParam] = useProjectsSearchParams();
-  const debounceParam = useDebounce(param, 500);
+  const memoParam = useMemo<Partial<Project>>(() => {
+    const obj: Partial<Project> = {};
+    if (param.name) {
+      obj.name = param.name;
+    }
+    if (param.personId) {
+      obj.personId = param.personId;
+    }
+    return obj;
+  }, [param.name, param.personId]);
+  const debounceParam = useDebounce(memoParam, 500);
 
   const dispatch = useDispatch();
   const list = useSelector((state) => state.project.projectList);
@@ -31,10 +42,8 @@ export const ProjectList = () => {
     dispatch(getProjectList(param));
   };
   useEffect(() => {
-    if (!projectModalOpen) {
-      dispatch(getProjectList(debounceParam));
-    }
-  }, [dispatch, debounceParam, projectModalOpen]);
+    dispatch(getProjectList(debounceParam));
+  }, [dispatch, debounceParam]);
 
   useEffect(() => {
     dispatch(getProjectUsers({ useCache: true }));
