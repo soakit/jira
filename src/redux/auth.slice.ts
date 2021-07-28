@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "types/user";
-import * as auth from "context/auth-provider";
+import * as AuthApi from "api/auth.api";
 import { AuthForm } from "context/auth";
 
 interface State {
@@ -18,7 +18,7 @@ const initialState: State = {
 export const login = createAsyncThunk(
   "auth/login",
   async (params: AuthForm, thunkAPI) => {
-    const data = await auth.login(params);
+    const data = await AuthApi.login(params);
     return data;
   }
 );
@@ -26,13 +26,13 @@ export const login = createAsyncThunk(
 export const register = createAsyncThunk(
   "auth/register",
   async (params: AuthForm, thunkAPI) => {
-    const { user } = await auth.register(params);
+    const { user } = await AuthApi.register(params);
     return user;
   }
 );
 
 export const getUserInfo = createAsyncThunk("auth/getUserInfo", async () => {
-  const data = await auth.getUserInfo();
+  const data = await AuthApi.getUserInfo();
   return data;
 });
 
@@ -42,11 +42,11 @@ export const authSlice = createSlice({
   reducers: {
     logOut(state) {
       state.user = null;
-      auth.logout();
+      AuthApi.logout();
     },
   },
   extraReducers: {
-    [login.pending.type](state, action: PayloadAction<User>) {
+    [login.pending.type](state) {
       state.isLoading = true;
     },
     [login.fulfilled.type](state, action: PayloadAction<User>) {
@@ -59,7 +59,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.user = null;
     },
-    [register.pending.type](state, action: PayloadAction<User>) {
+    [register.pending.type](state) {
       state.isLoading = true;
     },
     [register.fulfilled.type](state, action: PayloadAction<User>) {
@@ -72,14 +72,14 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.user = null;
     },
-    [getUserInfo.pending.type](state, action: PayloadAction<User>) {
+    [getUserInfo.pending.type](state) {
       state.isLoading = true;
     },
     [getUserInfo.fulfilled.type](state, action: PayloadAction<User>) {
       state.user = action.payload;
       state.isLoading = false;
     },
-    [getUserInfo.rejected.type](state, action: PayloadAction<User>) {
+    [getUserInfo.rejected.type](state) {
       state.user = null;
       state.isLoading = false;
     },

@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Divider, List, Popover, Typography } from "antd";
 import styled from "@emotion/styled";
-import { useUsers } from "utils/user";
+import { useSelector } from "redux/store";
+import { useDispatch } from "react-redux";
+import { getProjectUsers } from "redux/project.slice";
 
 export const UserPopover = () => {
-  // TODO: fix refetch
-  // const { data: users, refetch } = useUsers();
-  const { data: users } = useUsers();
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.project.users);
+
+  useEffect(() => {
+    dispatch(getProjectUsers({ useCache: false }));
+  }, [dispatch]);
 
   const content = (
     <ContentContainer>
@@ -23,11 +28,7 @@ export const UserPopover = () => {
   );
 
   return (
-    <Popover
-      // onVisibleChange={() => refetch()}
-      placement={"bottom"}
-      content={content}
-    >
+    <Popover placement={"bottom"} content={content}>
       <span>组员</span>
     </Popover>
   );

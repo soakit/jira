@@ -6,7 +6,7 @@ import { Button, Divider } from "antd";
 import styled from "@emotion/styled";
 import UserLayout from "layouts/UserLayout";
 
-// import { useDocumentTitle } from "utils";
+import { useDocumentTitle } from "utils";
 import { ErrorBox } from "components/lib";
 import { useSelector } from "redux/store";
 
@@ -15,7 +15,7 @@ export default function LoginPage() {
   // const [error, setError] = useState<Error | null>(null);
   const error = useSelector((state) => state.auth.error);
 
-  //   useDocumentTitle("请登录注册以继续");
+  useDocumentTitle("请登录注册以继续");
 
   return (
     <UserLayout>

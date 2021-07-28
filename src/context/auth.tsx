@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect } from "react";
-import * as auth from "./auth-provider";
+import * as auth from "../api/auth.api";
 import { http } from "utils/http";
 import { useAsync } from "hooks/useAsync";
 import { FullPageErrorFallback, FullPageLoading } from "components/lib";

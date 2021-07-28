@@ -1,5 +1,5 @@
 import qs from "qs";
-import * as auth from "context/auth-provider";
+import * as auth from "api/auth.api";
 import { useCallback } from "react";
 import { useSelector } from "redux/store";
 
