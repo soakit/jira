@@ -2,18 +2,16 @@ import React from "react";
 import styled from "@emotion/styled";
 import PageHeader from "components/header/Header";
 
-export default function MainLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+// function  MainLayout: React.FC = function(children) { // error
+const MainLayout: React.FC = function (children) {
   return (
     <Container>
       <PageHeader />
       <Main>{children}</Main>
     </Container>
   );
-}
+};
+export default MainLayout;
 
 // temporal dead zone(暂时性死区)
 const Container = styled.div`
