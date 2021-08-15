@@ -10,9 +10,11 @@ import { ButtonNoPadding } from "components/lib";
 import { useProjectModal } from "../hooks/ProjectHooks";
 import { Project } from "types/project";
 import { User } from "types/user";
+import { Mark } from "components/Mark";
 
 interface ListProps extends TableProps<Project> {
   users: User[];
+  keyword?: string;
   refresh: () => void;
 }
 
@@ -46,7 +48,12 @@ export const ProjectTable = ({ users, ...props }: ListProps) => {
           title: "名称",
           sorter: (a, b) => a.name.localeCompare(b.name),
           render(value, project) {
-            return <Link to={String(project.id)}>{project.name}</Link>;
+            // return <Link to={String(project.id)}>{project.name}</Link>;
+            return (
+              <Link to={String(project.id)}>
+                <Mark keyword={props.keyword} name={project.name} />
+              </Link>
+            );
           },
         },
         {

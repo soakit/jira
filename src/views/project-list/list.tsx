@@ -64,6 +64,7 @@ export const ProjectList = () => {
         loading={isLoading}
         users={users || []}
         dataSource={list || []}
+        keyword={param.name}
       />
     </MainContainer>
   );
