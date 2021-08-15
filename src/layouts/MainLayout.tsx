@@ -2,8 +2,8 @@ import React from "react";
 import styled from "@emotion/styled";
 import PageHeader from "components/header/Header";
 
-// function  MainLayout: React.FC = function(children) { // error
-const MainLayout: React.FC = function (children) {
+// function  MainLayout: React.FC = function({children}) { // error
+const MainLayout: React.FC = function ({ children }) {
   return (
     <Container>
       <PageHeader />
