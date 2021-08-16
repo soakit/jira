@@ -4,8 +4,9 @@ import { getToken } from "./auth.api";
 
 export const getProjectList = async (data?: Partial<Project>) => {
   let list = [];
-  const token = getToken();
-  if (token) {
+  const token = getToken() || undefined;
+  // node环境有global说明是执行的单元测试
+  if (token || typeof global === "object") {
     const res = await http("projects", { token, data });
     list = res;
   }
@@ -14,8 +15,9 @@ export const getProjectList = async (data?: Partial<Project>) => {
 
 export const getProjectUsers = async () => {
   let list = [];
-  const token = getToken();
-  if (token) {
+  const token = getToken() || undefined;
+  // node环境有global说明是执行的单元测试
+  if (token || typeof global === "object") {
     const res = await http("users", { token });
     list = res;
   }

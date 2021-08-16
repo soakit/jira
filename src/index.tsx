@@ -6,18 +6,14 @@ import App from "./App";
 import { DevTools, loadServer } from "jira-dev-tool";
 import "antd/dist/antd.less";
 import reportWebVitals from "./reportWebVitals";
-import { Provider } from "react-redux";
-import { store } from "redux/store";
-import { BrowserRouter } from "react-router-dom";
+import { AppProvider } from "context";
 
 loadServer(() =>
   ReactDOM.render(
     <React.StrictMode>
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
+      <AppProvider>
+        <App />
+      </AppProvider>
       <DevTools />
     </React.StrictMode>,
     document.getElementById("root")
